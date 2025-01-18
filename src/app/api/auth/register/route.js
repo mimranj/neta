@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 export async function POST(req) {
   try {
     await dbConnect();
-    const data = await req.json();
+    let data = await req.json();
     const hashedPassword = await bcrypt.hash(data.password, 10);
     data.password = hashedPassword;
     const session = await mongoose.startSession();
@@ -31,6 +31,7 @@ export async function POST(req) {
     await session.commitTransaction();
     session.endSession();
     const { password, ...userData } = user[0]._doc;
+    data=password
     return new NextResponse(JSON.stringify({ data: userData, msg: "User created successfully" }), { status: 201 });
   } catch (error) {
     console.error("Error creating user:", error);

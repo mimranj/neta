@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import dbConnect from '../../../../../mongoose/db-connection';
 import User from '../../../../../mongoose/models/user-model';
 import bcrypt from 'bcrypt'
@@ -22,6 +21,7 @@ export async function POST(req) {
       { status: 200 }
     );
   } catch (error) {
+    console.error('Error logging in:', error);
     return new Response(JSON.stringify({ error: 'Something went wrong' }), { status: 500 });
   }
 }
