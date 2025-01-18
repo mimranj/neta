@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-export async function POST(req: any, res: any) {
+export async function POST(req, res) {
 
     try {
         const { amount, currency = 'usd' } = await req.json();
@@ -15,7 +15,7 @@ export async function POST(req: any, res: any) {
         res.status(200).json({
             clientSecret: paymentIntent.client_secret,
         });
-    } catch (error: any) {
+    } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
