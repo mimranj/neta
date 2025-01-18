@@ -1,7 +1,8 @@
+import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-export async function POST(req) {
+export async function POST(req, res) {
 
     try {
         const { amount, currency = 'usd' } = await req.json();
@@ -11,11 +12,9 @@ export async function POST(req) {
             currency,
             payment_method_types: ['card'], // Enables cards, Google Pay, and Apple Pay
         });
-
-        res.status(200).json({
-            clientSecret: paymentIntent.client_secret,
-        });
+        return new NextResponse(JSON.stringify({ paymentIntent, msg: "Created successfully" }), { status: 201 });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error creating user:", error);
+        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 }

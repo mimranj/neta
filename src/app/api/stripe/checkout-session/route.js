@@ -1,31 +1,38 @@
+import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
-    
     try {
-        const { items, success_url, cancel_url } = await req.json();
+        const { item, success_url, cancel_url } = await req.json();
+        console.log(item, ";llllllllllllllllllll");
 
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'], // Add 'card' for cards, or other methods
-            mode: 'payment', // 'payment' for one-time payments, 'subscription' for recurring
-            line_items: items.map((item) => ({
-                price_data: {
-                    currency: 'usd',
-                    product_data: {
-                        name: item.name,
+            payment_method_types: ['card'], // Add more methods like 'google_pay' if needed
+            mode: 'payment',
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: item.name,
+                        },
+                        unit_amount: item.amount, // Amount in cents
                     },
-                    unit_amount: item.amount, // Amount in cents
+                    quantity: item.quantity,
                 },
-                quantity: item.quantity,
-            })),
+            ],
             success_url,
             cancel_url,
         });
 
-        res.status(200).json({ sessionId: session.id });
+        return new NextResponse(
+            JSON.stringify({ sessionId: session.id, msg: "Created successfully" }),
+            { status: 201 }
+        );
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error creating session:", error);
+        return new NextResponse(JSON.stringify({ error: error.message }), { status: 500 });
     }
 }
