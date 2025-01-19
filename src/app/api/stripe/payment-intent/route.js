@@ -11,7 +11,7 @@ export async function POST(req) {
             currency,
             payment_method_types: ['card'],
         });
-        return new NextResponse(JSON.stringify({ paymentIntent: paymentIntent.client_secret, msg: "Created successfully" }), { status: 201 });
+        return new NextResponse(JSON.stringify({ paymentIntent: paymentIntent, msg: "Created successfully" }), { status: 201 });
     } catch (error) {
         console.error("Error creating user:", error);
         return new Response(JSON.stringify({ error: error.message }), { status: 500 });
