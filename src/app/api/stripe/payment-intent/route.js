@@ -9,7 +9,7 @@ export async function POST(req) {
         const paymentIntent = await stripe.paymentIntents.create({
             amount, // Amount in cents
             currency,
-            payment_method_types: ['card', 'google_pay'],
+            payment_method_types: ['card'],
         });
         return new NextResponse(JSON.stringify({ paymentIntent: paymentIntent.client_secret, msg: "Created successfully" }), { status: 201 });
     } catch (error) {
