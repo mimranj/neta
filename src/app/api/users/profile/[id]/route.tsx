@@ -1,5 +1,6 @@
 import dbConnect from "../../../../../../mongoose/db-connection";
 import Profile from '../../../../../../mongoose/models/profile-model';
+import User from "../../../../../../mongoose/models/user-model";
 import { verifyToken } from "../../../../lib/jwt";
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -23,6 +24,26 @@ export async function PUT(req: any) {
     /* eslint-disable  @typescript-eslint/no-explicit-any */
   } catch (error: any) {
     console.error("Error updating profile:", error);
+    return new Response(JSON.stringify({ error: error.message }), { status: 400 });
+  }
+}
+
+export async function GET(req: any) {
+  try {
+    const isValidToken = verifyToken(req);
+    await dbConnect();
+    const data = await User.findOne({ email: isValidToken.email })
+            .populate({
+                path: "profile",
+                strictPopulate: true,
+            })
+    if (!data) {
+      return new Response(JSON.stringify({ msg: "Profile not found" }), { status: 404 });
+    }
+    const { password, ...userData } = data._doc;
+    return new Response(JSON.stringify({ data:userData, msg: "success" }), { status: 200 });
+  } catch (error: any) {
+    console.error("Error getting profile:", error);
     return new Response(JSON.stringify({ error: error.message }), { status: 400 });
   }
 }
