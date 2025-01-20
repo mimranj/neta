@@ -4,6 +4,7 @@ import User from '../../../../../mongoose/models/user-model';
 import Profile from '../../../../../mongoose/models/profile-model';
 import bcrypt from 'bcrypt'
 import mongoose from "mongoose";
+import Subscription from "../../../../../mongoose/models/subscription-model";
 
 export async function POST(req) {
   try {
@@ -26,12 +27,31 @@ export async function POST(req) {
       ],
       { session }
     );
+    const subscription = await Subscription.create(
+      [
+        {
+          user_id: user[0]._id,
+          subscription: [
+            {
+              intent_id: "",
+              name: "Free",
+              price: 0,
+              status: "active",
+              start_date: new Date(),
+              end_date: new Date(),
+            },
+          ],
+        },
+      ],
+      { session }
+    )
     user[0].profile = profile[0]._id;
+    user[0].subscription = subscription[0]._id;
     await user[0].save({ session });
     await session.commitTransaction();
     session.endSession();
     const { password, ...userData } = user[0]._doc;
-    data=password
+    data = password
     return new NextResponse(JSON.stringify({ data: userData, msg: "User created successfully" }), { status: 201 });
   } catch (error) {
     console.error("Error creating user:", error);

@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, // Reference to Profile
         ref: 'Profile', // Must match the name of the Profile model
     },
+    subscription: {
+        type: mongoose.Schema.Types.ObjectId, // Reference to Subscription
+        ref: 'Subscription', // Must match the name of the Subscription model
+    },
 },
     { timestamps: true },
 );

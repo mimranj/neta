@@ -8,11 +8,15 @@ export async function GET(req: any) {
     try {
         const isValidToken = verifyToken(req);
         await dbConnect();
-        const data = await User.findOne({ email: isValidToken.email }).populate({
-            path: "profile",
-            // select: 'name',
-            strictPopulate: true
-        })
+        const data = await User.findOne({ email: isValidToken.email })
+            .populate({
+                path: "profile",
+                strictPopulate: true,
+            })
+            .populate({
+                path: "subscription",
+                strictPopulate: true,
+            });
         const { password, ...userData } = data._doc;
         return NextResponse.json({ data: userData, msg: "success" });
         /* eslint-disable  @typescript-eslint/no-explicit-any */
