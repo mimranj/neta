@@ -6,43 +6,35 @@ import { verifyToken } from "../../../../lib/jwt";
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export async function PUT(req: any) {
   try {
-    const isValidToken = verifyToken(req); // Verify the user's token
-    await dbConnect(); // Connect to the database
+    const isValidToken = verifyToken(req); 
+    await dbConnect();
 
-    // Parse the request body
     const body = await req.json();
     const { name, email, phone_number, profile_img, address, dob, org_name } = body;
 
-    // Update the `User` fields
     let user = await User.findOne({ _id: isValidToken.id }).populate("profile");
     if (!user) {
       return new Response(JSON.stringify({ msg: "User not found" }), { status: 404 });
     }
 
-    // Update the `User` fields if provided
     if (name) user.name = name;
     if (email) user.email = email;
     if (phone_number) user.phone_number = phone_number;
 
-    // Save the updated `User`
     await user.save();
 
-    // Update the `Profile` fields
     let profile = await Profile.findOne({ user_id: isValidToken.id });
     if (!profile) {
       return new Response(JSON.stringify({ msg: "Profile not found" }), { status: 404 });
     }
 
-    // Update the `Profile` fields if provided
     if (profile_img) profile.profile_img = profile_img;
     if (address) profile.address = address;
     if (dob) profile.dob = dob;
     if (org_name) profile.org_name = org_name;
 
-    // Save the updated `Profile`
     await profile.save();
 
-    // Respond with the updated user and profile data
     return new Response(
       JSON.stringify({
         msg: "Profile and User updated successfully",

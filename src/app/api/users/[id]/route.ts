@@ -13,10 +13,6 @@ export async function GET(req: any) {
                 path: "profile",
                 strictPopulate: true,
             })
-            .populate({
-                path: "subscription",
-                strictPopulate: true,
-            });
         const { password, ...userData } = data._doc;
         return NextResponse.json({ data: userData, msg: "success" });
         /* eslint-disable  @typescript-eslint/no-explicit-any */
