@@ -21,7 +21,7 @@ export async function GET(req: any) {
         return NextResponse.json({ data: userData, msg: "success" });
         /* eslint-disable  @typescript-eslint/no-explicit-any */
     } catch (error: any) {
-        console.error(error.message);
+        console.error(error);
         return NextResponse.json({ err: error.message }, { status: 401 });
     }
 }
