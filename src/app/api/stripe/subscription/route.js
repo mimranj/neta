@@ -40,3 +40,19 @@ export async function PUT(req) {
         );
     }
 }
+
+
+export async function GET(req) {
+    try {
+        const isValidToken = verifyToken(req);
+        await dbConnect();
+        const subscription = await Subscription.findOne({ user_id: isValidToken.id });
+        if (!subscription) {
+            throw new Error("Subscription not found for the given user.");
+        }
+        return new Response(JSON.stringify({ data: subscription }), { status: 200 });
+    } catch (error) {
+        console.error("Error getting subscription:", error);
+        return new Response(JSON.stringify({ error: error.message }), { status: 400 });
+    }
+}
