@@ -34,7 +34,7 @@ yarn-error.log*
 .env
 
 # Allow .env.local to be tracked
-!.env.local
+.env.local
 
 # vercel
 .vercel
