@@ -18,6 +18,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'User phone number required']
     },
+    verified: {
+        type: Boolean,
+        default: false
+    },
+    verification_otp: {
+        type: String,
+        default: "0"
+    },
     profile: {
         type: mongoose.Schema.Types.ObjectId, // Reference to Profile
         ref: 'Profile', // Must match the name of the Profile model
