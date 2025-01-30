@@ -80,10 +80,10 @@ export async function GET(req: any) {
         path: "profile",
         strictPopulate: true,
       })
-      .populate({
-        path: "subscription",
-        strictPopulate: true,
-      })
+      // .populate({
+      //   path: "subscription",
+      //   strictPopulate: true,
+      // })
     if (!data) {
       return new Response(JSON.stringify({ msg: "Profile not found" }), { status: 404 });
     }
