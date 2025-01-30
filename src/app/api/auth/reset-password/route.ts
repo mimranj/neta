@@ -1,7 +1,9 @@
+const bcrypt = require('bcrypt');
 import { NextResponse } from 'next/server';
 import dbConnect from '../../../../../mongoose/db-connection';
 import User from "../../../../../mongoose/models/user-model";
-import bcrypt from "bcrypt"
+
+// import bcrypt from "bcrypt"
 
 export async function POST(req: any) {
     try {
