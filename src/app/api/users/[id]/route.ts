@@ -12,7 +12,6 @@ export async function GET(req: any) {
         await dbConnect();
         const data = await User.findOne({ email: isValidToken.email })
         const profile = await Profile.findOne({ user_id: data._id });
-        const subscription = await Subscription.findOne({ user_id: data._id });
         const { password, ...userData } = data._doc;
         return NextResponse.json({
             data: {
@@ -25,7 +24,6 @@ export async function GET(req: any) {
                 address: profile.address,
                 dob: profile.dob
             },
-            subscriptions: subscription.subscription,
             msg: "success"
         });
         /* eslint-disable  @typescript-eslint/no-explicit-any */
