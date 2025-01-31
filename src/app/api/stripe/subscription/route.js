@@ -1,5 +1,5 @@
-import Subscription from "../../../../../mongoose/models/subscription-model";
 import dbConnect from "../../../../../mongoose/db-connection";
+const Subscription = require("../../../../../mongoose/models/subscription-model");
 import { verifyToken } from "../../../../app/lib/jwt";
 export async function PUT(req) {
     try {
