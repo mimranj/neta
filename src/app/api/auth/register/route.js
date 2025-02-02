@@ -5,6 +5,7 @@ import Profile from '../../../../../mongoose/models/profile-model';
 import bcrypt from 'bcrypt'
 import mongoose from "mongoose";
 import Subscription from "../../../../../mongoose/models/subscription-model";
+import ChatHistory from "../../../../../mongoose/models/chat-history-model";
 
 export async function POST(req) {
   try {
@@ -27,6 +28,27 @@ export async function POST(req) {
       ],
       { session }
     );
+    const chatHistory = await ChatHistory.create(
+      [
+        {
+          user_id: user[0]._id,
+          chats: [
+            {
+              messages: [
+                {
+                  id: 1,
+                  text: "Hello! How can I help you today?",
+                  sender: "ai",
+                  timestamp: new Date(),
+                }
+              ],
+              timestamp: new Date(),
+            }
+          ],
+        },
+      ],
+      {session}
+    )
     const subscription = await Subscription.create(
       [
         {
@@ -47,7 +69,10 @@ export async function POST(req) {
     )
     user[0].profile = profile[0]._id;
     user[0].subscription = subscription[0]._id;
+    user[0].chat_history = chatHistory[0]._id;
     await user[0].save({ session });
+    console.log(chatHistory, "ccccccccccccccccccccc");
+    
     await session.commitTransaction();
     session.endSession();
     const { password, ...userData } = user[0]._doc;

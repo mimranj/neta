@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, // Reference to Subscription
         ref: 'Subscription', // Must match the name of the Subscription model
     },
+    chat_history: {
+        type: mongoose.Schema.Types.ObjectId, // Reference to ChatHistory
+        ref: 'ChatHistory', // Must match the name of the ChatHistory model
+    },
 },
     { timestamps: true },
 );
