@@ -3,11 +3,11 @@ import ChatHistory from "../../../../../..//mongoose/models/chat-history-model";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "../../../../../app/lib/jwt";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params: { id: string } }) {
     try {
         const isValidToken = verifyToken(req);
         await dbConnect();
-        const { id } = params;
+        const { id } = context.params;
         if (!id) {
             return NextResponse.json({ error: "Chat ID is required" }, { status: 400 });
         }
@@ -15,11 +15,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         if (!chatHistory) {
             return NextResponse.json({ error: "Chat not found" }, { status: 404 });
         }
-        const resChat= chatHistory.chats.find((chat: any) => chat._id == id);
+        const resChat = chatHistory.chats.find((chat: any) => chat._id == id);
         if (!resChat) {
             return NextResponse.json({ error: "Chat not found" }, { status: 404 });
         }
-        return NextResponse.json({ msg: "success.", chat:resChat }, { status: 200 });
+        return NextResponse.json({ msg: "success.", chat: resChat }, { status: 200 });
     } catch (error: any) {
         console.error("Error fetching chat:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
@@ -27,11 +27,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
     try {
         const isValidToken = verifyToken(req);
         await dbConnect();
-        const { id } = params;
+        const { id } = context.params;
         if (!id) {
             return NextResponse.json({ error: "Chat ID is required" }, { status: 400 });
         }
