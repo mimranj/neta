@@ -7,7 +7,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: number }
     try {
         const isValidToken = verifyToken(req);
         await dbConnect();
-        const { id } = params;
+        const { id } = await params;
         if (!id) {
             return NextResponse.json({ error: "Chat ID is required" }, { status: 400 });
         }
@@ -31,7 +31,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: numbe
     try {
         const isValidToken = verifyToken(req);
         await dbConnect();
-        const { id } = params;
+        const { id } = await params;
         if (!id) {
             return NextResponse.json({ error: "Chat ID is required" }, { status: 400 });
         }
