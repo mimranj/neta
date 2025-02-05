@@ -44,7 +44,14 @@ export async function GET(req: any) {
         const chatHistory = await ChatHistory.findOne({ user_id: isValidToken.id });
         if (!chatHistory) {
         }
-        return new Response(JSON.stringify({ data: chatHistory }), { status: 200 });
+        // Transforming data to return only required fields
+        const chats = chatHistory.chats.map((chat: any) => ({
+            _id: chat._id,
+            title: chat.title,
+            timestamp: chat.timestamp,
+        }));
+
+        return new Response(JSON.stringify({ data: { _id: chatHistory._id, user_id: chatHistory.user_id, chats } }), { status: 200 });
     } catch (error: any) {
         console.error("Error getting subscription:", error);
         return new Response(JSON.stringify({ error: error.message }), { status: 400 });
