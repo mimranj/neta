@@ -15,7 +15,7 @@ const chatHistorySchema = new mongoose.Schema(
                 messages: [  // Renaming "chats" to "messages" for clarity
                     {
                         id: { type: Number, required: true }, // Auto-generate message ID
-                        text: { type: String, required: true }, // Message content
+                        text: { type: Object, required: true }, // Message content
                         sender: { type: String, required: true }, // false = user, true = AI
                         timestamp: { type: Date, default: Date.now }, // Message timestamp
                     },
