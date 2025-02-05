@@ -3,7 +3,7 @@ import ChatHistory from "../../../../../..//mongoose/models/chat-history-model";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "../../../../../app/lib/jwt";
 
-export async function GET(req: NextRequest, { params }: { params: { id: number } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         const isValidToken = verifyToken(req);
         await dbConnect();
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: number }
 }
 
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: number } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         const isValidToken = verifyToken(req);
         await dbConnect();
