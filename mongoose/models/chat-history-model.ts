@@ -11,6 +11,7 @@ const chatHistorySchema = new mongoose.Schema(
         },
         chats: [
             {
+                title:{ type: String, default: "" }, // Chat session title
                 timestamp: { type: Date, default: Date.now }, // Chat session timestamp
                 messages: [  // Renaming "chats" to "messages" for clarity
                     {

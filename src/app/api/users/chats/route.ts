@@ -19,6 +19,7 @@ export async function PUT(req: NextRequest) {
             return NextResponse.json({ error: "something went wrong" }, { status: 400 });
         }
         chatHistory.chats.push({
+            title: chat[0].text.response,
             messages: chat.map((msg: any) => ({
                 id: msg.id, // Generate unique message ID
                 text: msg.text,
@@ -42,7 +43,6 @@ export async function GET(req: any) {
         await dbConnect();
         const chatHistory = await ChatHistory.findOne({ user_id: isValidToken.id });
         if (!chatHistory) {
-            throw new Error("chatHistory not found for the given user.");
         }
         return new Response(JSON.stringify({ data: chatHistory }), { status: 200 });
     } catch (error: any) {
