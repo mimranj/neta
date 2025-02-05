@@ -49,7 +49,7 @@ export async function GET(req: any) {
             _id: chat._id,
             title: chat.title,
             timestamp: chat.timestamp,
-        }));
+        })).sort((a: any, b: any) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
         return new Response(JSON.stringify({ data: { _id: chatHistory._id, user_id: chatHistory.user_id, chats } }), { status: 200 });
     } catch (error: any) {
