@@ -101,8 +101,17 @@ export async function GET(req: any) {
     const { password, ...userData } = data._doc;
     return new Response(JSON.stringify({
       data: {
-        name: userData.name, email: userData.email, phone_number: userData.phone_number, verified: userData.verified,
-        profile_img: userData.profile.profile_img, org_name: userData.profile.org_name, plan: activePlan
+        name: userData.name, 
+        email: userData.email, 
+        phone_number: userData.phone_number, 
+        verified: userData.verified,
+        profile_img: userData.profile.profile_img, 
+        org_name: userData.profile.org_name,
+        website: userData.profile.website,
+        number_of_electricians: userData.profile.number_of_electricians,
+        where_to_get_esupplies: userData.profile.where_to_get_esupplies,
+        address: userData.profile.address,
+        plan: activePlan
       }, msg: "success"
     }), { status: 200 });
   } catch (error: any) {
