@@ -13,10 +13,10 @@ export async function PUT(req: any) {
   let email_body = 'Your account has been updated'
   try {
     const body = await req.json();
-    const { name, email, phone_number, profile_img, address, dob, org_name } = body;
+    const { name, phone_number, profile_img, address, dob, org_name, website, number_of_electricians,where_to_get_esupplies } = body;
     const isValidToken = verifyToken(req);
     let imageUrl
-    if (profile_img.name) {
+    if (profile_img) {
       imageUrl = await uploadFileToS3(body.profile_img);
     }
     await dbConnect();
@@ -29,7 +29,6 @@ export async function PUT(req: any) {
     }
 
     if (name) user.name = name;
-    if (email) user.email = email;
     if (phone_number) user.phone_number = phone_number;
 
     await user.save();
@@ -43,6 +42,9 @@ export async function PUT(req: any) {
     if (address) profile.address = address;
     if (dob) profile.dob = dob;
     if (org_name) profile.org_name = org_name;
+    if (website) profile.website = website;
+    if (number_of_electricians) profile.number_of_electricians = number_of_electricians;
+    if (where_to_get_esupplies) profile.where_to_get_esupplies = where_to_get_esupplies;
 
     await profile.save();
     await sendMail(receiver_email, email_subject, email_body)
@@ -60,6 +62,9 @@ export async function PUT(req: any) {
             address: profile.address,
             dob: profile.dob,
             org_name: profile.org_name,
+            website: profile.website,
+            number_of_electricians: profile.number_of_electricians,
+            where_to_get_esupplies: profile.where_to_get_esupplies
           },
         },
       }),

@@ -5,9 +5,18 @@ const profileSchema = new mongoose.Schema(
         profile_img: { // Changed to lowercase
             type: String,
         },
+        website:{
+            type: String
+        },
         org_name: { // Changed to lowercase
             type: String,
         },
+        number_of_electricians: {
+            type: Number
+        },
+        where_to_get_esupplies: {
+            type: String
+        }, // Changed to lowercase
         address: { // Changed to lowercase
             type: String,
         },

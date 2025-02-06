@@ -71,7 +71,6 @@ export async function POST(req) {
     user[0].subscription = subscription[0]._id;
     user[0].chat_history = chatHistory[0]._id;
     await user[0].save({ session });
-    console.log(chatHistory, "ccccccccccccccccccccc");
     
     await session.commitTransaction();
     session.endSession();
