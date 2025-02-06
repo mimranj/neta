@@ -16,7 +16,7 @@ export async function PUT(req: any) {
     const { name, phone_number, profile_img, address, dob, org_name, website, number_of_electricians,where_to_get_esupplies } = body;
     const isValidToken = verifyToken(req);
     let imageUrl
-    if (profile_img) {
+    if (profile_img.name) {
       imageUrl = await uploadFileToS3(body.profile_img);
     }
     await dbConnect();
