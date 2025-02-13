@@ -56,7 +56,7 @@ export async function POST(req) {
           subscription: [
             {
               intent_id: "",
-              name: "Free Tier",
+              name: "Electrician Free Tier",
               price: 0,
               status: "active",
               start_date: new Date(),
