@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "0"
     },
+    first_login: {
+        type: Boolean,
+        default: true
+    },
     profile: {
         type: mongoose.Schema.Types.ObjectId, // Reference to Profile
         ref: 'Profile', // Must match the name of the Profile model

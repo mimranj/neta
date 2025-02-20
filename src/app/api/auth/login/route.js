@@ -15,11 +15,19 @@ export async function POST(req) {
     if (!isPasswordValid) {
       return new Response(JSON.stringify({ error: 'Invalid email or password' }), { status: 401 });
     }
+    let first_login = false
+    if (user.first_login) {
+      first_login = true
+      user.first_login = false
+      await user.save()
+    }
+
     const token = signToken({ id: user._id, email: user.email });
-    return new Response(
-      JSON.stringify({ msg: 'Login successful', token }),
-      { status: 200 }
-    );
+    const responseObj = { msg: 'Login successful', token };
+    if (first_login) {
+      responseObj.first_login = first_login;
+    }
+    return new Response(JSON.stringify(responseObj),{ status: 200 });
   } catch (error) {
     console.error('Error logging in:', error);
     return new Response(JSON.stringify({ error: 'Something went wrong' }), { status: 500 });
