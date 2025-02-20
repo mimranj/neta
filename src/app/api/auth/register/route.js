@@ -47,8 +47,10 @@ export async function POST(req) {
           ],
         },
       ],
-      {session}
+      { session }
     )
+    const now = new Date();
+    const end_date = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
     const subscription = await Subscription.create(
       [
         {
@@ -56,11 +58,11 @@ export async function POST(req) {
           subscription: [
             {
               intent_id: "",
-              name: "Electrician Free Tier",
+              name: "Pro Electrician Tier",
               price: 0,
               status: "active",
               start_date: new Date(),
-              end_date: new Date(),
+              end_date: end_date,
             },
           ],
         },
@@ -71,7 +73,7 @@ export async function POST(req) {
     user[0].subscription = subscription[0]._id;
     user[0].chat_history = chatHistory[0]._id;
     await user[0].save({ session });
-    
+
     await session.commitTransaction();
     session.endSession();
     const { password, ...userData } = user[0]._doc;

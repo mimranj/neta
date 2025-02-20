@@ -13,7 +13,7 @@ export async function PUT(req: any) {
   let email_body = 'Your account has been updated'
   try {
     const body = await req.json();
-    const { name, phone_number, profile_img, address, dob, org_name, website, number_of_electricians,where_to_get_esupplies } = body;
+    const { name, phone_number, profile_img, address, dob, org_name, website, number_of_electricians, where_to_get_esupplies } = body;
     const isValidToken = verifyToken(req);
     let imageUrl
     if (profile_img.name) {
@@ -86,32 +86,23 @@ export async function GET(req: any) {
         path: "profile",
         strictPopulate: true,
       })
-    // .populate({
-    //   path: "subscription",
-    //   strictPopulate: true,
-    // })
-    const subscriptions = await Subscription.findOne({ user_id: data._id });
-    if (!subscriptions) {
-      throw new Error("Subscription not found for the given user.");
-    }
-    const activePlan = subscriptions.subscription.find((plan:any) => plan.status === "active");
     if (!data) {
       return new Response(JSON.stringify({ msg: "Profile not found" }), { status: 404 });
     }
     const { password, ...userData } = data._doc;
     return new Response(JSON.stringify({
       data: {
-        name: userData.name, 
-        email: userData.email, 
-        phone_number: userData.phone_number, 
+        name: userData.name,
+        email: userData.email,
+        phone_number: userData.phone_number,
         verified: userData.verified,
-        profile_img: userData.profile.profile_img, 
+        profile_img: userData.profile.profile_img,
         org_name: userData.profile.org_name,
         website: userData.profile.website,
         number_of_electricians: userData.profile.number_of_electricians,
         where_to_get_esupplies: userData.profile.where_to_get_esupplies,
         address: userData.profile.address,
-        plan: activePlan
+        // plan: activePlan
       }, msg: "success"
     }), { status: 200 });
   } catch (error: any) {
